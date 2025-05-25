@@ -21,3 +21,5 @@ spring:
     port: 5672
     username: guest
     password: guest
+    propostaPendente:
+      exchange: "proposta-pendente.ex"
