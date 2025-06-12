@@ -19,14 +19,14 @@ public class PropostaService {
 
     private PropostaRepository propostaRepository;
 
-    private NotificacaoService notificacaoService;
+    private NotificacaoRabbitService notificacaoRabbitService;
 
     @Value("${spring.rabbitmq.propostaPendente.exchange}")
     private String exchange;
 
-    public PropostaService(PropostaRepository propostaRepository, NotificacaoService notificacaoService, @Value("${spring.rabbitmq.propostaPendente.exchange}") String exchange) {
+    public PropostaService(PropostaRepository propostaRepository, NotificacaoRabbitService notificacaoRabbitService, @Value("${spring.rabbitmq.propostaPendente.exchange}") String exchange) {
         this.propostaRepository = propostaRepository;
-        this.notificacaoService = notificacaoService;
+        this.notificacaoRabbitService = notificacaoRabbitService;
         this.exchange = exchange;
     }
 
@@ -43,7 +43,7 @@ public class PropostaService {
 
     public void notificarRabbitMq(Proposta proposta){
         try{
-            notificacaoService.notificar(proposta,exchange);
+            notificacaoRabbitService.notificar(proposta,exchange);
         }catch (RuntimeException ex){
             proposta.setIntegrada(false);
             propostaRepository.save(proposta);
